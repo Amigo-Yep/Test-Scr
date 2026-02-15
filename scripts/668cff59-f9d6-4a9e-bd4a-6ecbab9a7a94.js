@@ -61,9 +61,36 @@ async function runTask(page, context, paths) {
       }
     }
 
-    // Step 3: نقر على عنصر
+    // Step 3: التقاط صورة
     let retries_step3 = 3;
     while (retries_step3 > 0) {
+      try {
+        // 📸 التقاط لقطة شاشة
+        screenshotCounter++;
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        // ✅ استخدام مسار المخرجات من stealth-helpers
+        const screenshotPath = path.join(paths.screenshots, `screenshot-${screenshotCounter}-viewport-${timestamp}.png`);
+        console.log('📸 جاري التقاط لقطة الشاشة (viewport)...');
+        try {
+          await currentPage.screenshot({ path: screenshotPath,  });
+          console.log('✅ تم حفظ اللقطة بنجاح في:', screenshotPath);
+        } catch (screenshotError) {
+          console.error('❌ خطأ في حفظ لقطة الشاشة:', screenshotError.message);
+          throw screenshotError;
+        }
+                break;
+      } catch (stepError) {
+        retries_step3--;
+        if (retries_step3 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 4: نقر على عنصر
+    let retries_step4 = 3;
+    while (retries_step4 > 0) {
       try {
         
         // 👆 خطوة نقر ذكية على العنصر
@@ -118,17 +145,17 @@ async function runTask(page, context, paths) {
         }
                 break;
       } catch (stepError) {
-        retries_step3--;
-        if (retries_step3 === 0) {
+        retries_step4--;
+        if (retries_step4 === 0) {
           throw stepError;
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
-    // Step 4: انتظار
-    let retries_step4 = 3;
-    while (retries_step4 > 0) {
+    // Step 5: انتظار
+    let retries_step5 = 3;
+    while (retries_step5 > 0) {
       try {
         // ⏱️ انتظار زمني
         console.log('\n⏱️ الانتظار:');
@@ -138,17 +165,44 @@ async function runTask(page, context, paths) {
         console.log('   ✅ انتهت مدة الانتظار');
                 break;
       } catch (stepError) {
-        retries_step4--;
-        if (retries_step4 === 0) {
+        retries_step5--;
+        if (retries_step5 === 0) {
           throw stepError;
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
-    // Step 5: كتابة نص
-    let retries_step5 = 2;
-    while (retries_step5 > 0) {
+    // Step 6: التقاط صورة
+    let retries_step6 = 3;
+    while (retries_step6 > 0) {
+      try {
+        // 📸 التقاط لقطة شاشة
+        screenshotCounter++;
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        // ✅ استخدام مسار المخرجات من stealth-helpers
+        const screenshotPath = path.join(paths.screenshots, `screenshot-${screenshotCounter}-viewport-${timestamp}.png`);
+        console.log('📸 جاري التقاط لقطة الشاشة (viewport)...');
+        try {
+          await currentPage.screenshot({ path: screenshotPath,  });
+          console.log('✅ تم حفظ اللقطة بنجاح في:', screenshotPath);
+        } catch (screenshotError) {
+          console.error('❌ خطأ في حفظ لقطة الشاشة:', screenshotError.message);
+          throw screenshotError;
+        }
+                break;
+      } catch (stepError) {
+        retries_step6--;
+        if (retries_step6 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 7: كتابة نص
+    let retries_step7 = 2;
+    while (retries_step7 > 0) {
       try {
         // ⌨️ كتابة نص في حقل
         console.log('\n⌨️ كتابة نص في حقل:');
@@ -178,17 +232,17 @@ async function runTask(page, context, paths) {
         }
                 break;
       } catch (stepError) {
-        retries_step5--;
-        if (retries_step5 === 0) {
+        retries_step7--;
+        if (retries_step7 === 0) {
           throw stepError;
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
-    // Step 6: كتابة نص
-    let retries_step6 = 2;
-    while (retries_step6 > 0) {
+    // Step 8: كتابة نص
+    let retries_step8 = 2;
+    while (retries_step8 > 0) {
       try {
         // ⌨️ كتابة نص في حقل
         console.log('\n⌨️ كتابة نص في حقل:');
@@ -218,17 +272,17 @@ async function runTask(page, context, paths) {
         }
                 break;
       } catch (stepError) {
-        retries_step6--;
-        if (retries_step6 === 0) {
+        retries_step8--;
+        if (retries_step8 === 0) {
           throw stepError;
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
 
-    // Step 7: نقر على عنصر
-    let retries_step7 = 2;
-    while (retries_step7 > 0) {
+    // Step 9: نقر على عنصر
+    let retries_step9 = 2;
+    while (retries_step9 > 0) {
       try {
         
         // 👆 خطوة نقر ذكية على العنصر
@@ -277,8 +331,8 @@ async function runTask(page, context, paths) {
         }
                 break;
       } catch (stepError) {
-        retries_step7--;
-        if (retries_step7 === 0) {
+        retries_step9--;
+        if (retries_step9 === 0) {
           throw stepError;
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
