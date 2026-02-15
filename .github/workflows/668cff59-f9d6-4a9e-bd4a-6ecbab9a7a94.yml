@@ -1,0 +1,76 @@
+name: Task 668cff59-f9d6-4a9e-bd4a-6ecbab9a7a94
+
+# Trigger on manual dispatch and schedule
+on:
+  workflow_dispatch:
+    inputs:
+      runCount:
+        description: 'عدد مرات تشغيل المهمة (Number of runs)'
+        required: false
+        default: '1'
+        type: string
+
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  run-task:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Dependencies
+        run: |
+          npm install --save-dev playwright
+          npx playwright install chromium
+      
+      - name: Create Results Directory
+        run: mkdir -p results
+      
+      - name: Run Task Script
+        run: node scripts/668cff59-f9d6-4a9e-bd4a-6ecbab9a7a94.js
+        env:
+          RUN_COUNT: ${{ inputs.runCount || '1' }}
+          TASK_ID: 668cff59-f9d6-4a9e-bd4a-6ecbab9a7a94
+          TASK_NAME: تسجيل دخول
+          TARGET_URL: https://www.duolingo.com/?isLoggingIn=true
+          STEALTH_LEVEL: advanced
+          STEALTH_HIDE_WEBDRIVER: true
+          STEALTH_RANDOM_UA: true
+          STEALTH_RANDOM_VIEWPORT: true
+          STEALTH_BLOCK_WEBRTC: true
+      
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: task-results-run-${{ github.run_number }}
+          path: results/
+          retention-days: 7
+      
+      - name: Generate Summary Report
+        if: always()
+        run: |
+          echo "## 📊 Task Execution Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Task:** تسجيل دخول" >> $GITHUB_STEP_SUMMARY
+          echo "**Task ID:** 668cff59-f9d6-4a9e-bd4a-6ecbab9a7a94" >> $GITHUB_STEP_SUMMARY
+          echo "**Workflow:** task-668cff59-f9d6-4a9e-bd4a-6ecbab9a7a94.yml" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Run Count:** ${{ inputs.runCount || '1' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -d results ]; then
+            echo "**Results:** ```" >> $GITHUB_STEP_SUMMARY
+            find results -type f -name "*.json" | head -5 | while read f; do
+              echo "- $(basename $f)" >> $GITHUB_STEP_SUMMARY
+            done
+            echo "```" >> $GITHUB_STEP_SUMMARY
+          fi
