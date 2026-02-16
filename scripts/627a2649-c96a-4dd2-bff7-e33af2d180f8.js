@@ -14,26 +14,26 @@ async function runTask(page, context, paths) {
   pages['main'] = page;
   let screenshotCounter = 0;
   
-  try {
-    // Step 1: تسجيل فيديو
-    let retries_step1 = 3;
-    while (retries_step1 > 0) {
-      try {
-        // 🎥 تسجيل الفيديو - تم تفعيله على مستوى السياق
-        console.log('🎥 خطوة الفيديو:');
-        console.log('   ℹ️  التسجيل يشمل جميع الصفحات في هذا السياق');
-        console.log('   📁 مجلد الحفظ: outputs/videos/');
-        console.log('   ⏱️  سيتم حفظ الفيديو تلقائياً عند إغلاق السياق');
-        console.log('   ✅ الحالة: الفيديو نشط ومُسجَّل');
-                break;
-      } catch (stepError) {
-        retries_step1--;
-        if (retries_step1 === 0) {
-          throw stepError;
-        }
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
+  // try {
+  //   // Step 1: تسجيل فيديو
+  //   let retries_step1 = 3;
+  //   while (retries_step1 > 0) {
+  //     try {
+  //       // 🎥 تسجيل الفيديو - تم تفعيله على مستوى السياق
+  //       console.log('🎥 خطوة الفيديو:');
+  //       console.log('   ℹ️  التسجيل يشمل جميع الصفحات في هذا السياق');
+  //       console.log('   📁 مجلد الحفظ: outputs/videos/');
+  //       console.log('   ⏱️  سيتم حفظ الفيديو تلقائياً عند إغلاق السياق');
+  //       console.log('   ✅ الحالة: الفيديو نشط ومُسجَّل');
+  //               break;
+  //     } catch (stepError) {
+  //       retries_step1--;
+  //       if (retries_step1 === 0) {
+  //         throw stepError;
+  //       }
+  //       await new Promise(resolve => setTimeout(resolve, 1000));
+  //     }
+  //   }
 
     // Step 2: فتح صفحة
     let retries_step2 = 3;
