@@ -47,13 +47,15 @@ jobs:
           STEALTH_RANDOM_VIEWPORT: true
           STEALTH_BLOCK_WEBRTC: true
       
-      - name: Upload Results
-        uses: actions/upload-artifact@v4
+      - name: Upload results
         if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: task-results-run-${{ github.run_number }}
-          path: results/
-          retention-days: 7
+          name: task-results-1771277449550850640
+          path: |
+            ./outputs/
+            ./outputs/screenshots/
+            ./outputs/videos/
       
       - name: Generate Summary Report
         if: always()
