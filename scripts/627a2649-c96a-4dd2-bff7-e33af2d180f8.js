@@ -446,6 +446,132 @@ async function runTask(page, context, paths) {
       }
     }
 
+    // Step 15: نقر على عنصر
+    let retries_step15 = 2;
+    while (retries_step15 > 0) {
+      try {
+        
+        // 👆 خطوة نقر ذكية على العنصر
+        console.log('\n👆 خطوة نقر على عنصر:');
+        console.log('   🔍 جاري البحث عن العنصر...');
+        console.log('   📋 عدد المحددات:', 3);
+        let clickSelector = null;
+        const selectorsToTry = ["button[data-test='register-button']","button:has-text(\"Login\")","button:has-text(\"Sign In\")"];
+        
+        // البحث عن أول عنصر قابل للنقر
+        for (const selector of selectorsToTry) {
+          try {
+            const element = await currentPage.locator(selector).first();
+            if (await element.isVisible({ timeout: 1000 }).catch(() => false)) {
+              clickSelector = selector;
+              break;
+            }
+          } catch (e) {}
+        }
+        
+        if (!clickSelector) {
+          const errorMsg = '❌ فشل: لم يتم العثور على عنصر قابل للنقر بأي من المحددات: ' + selectorsToTry.join(', ');
+          console.error(errorMsg);
+          throw new Error(errorMsg);
+        }
+        
+        console.log('✅ عنصر وُجد بنجاح:');
+        console.log('   📍 Selector:', clickSelector);
+        console.log('   ✓ الحالة: مرئي وقابل للنقر');
+        
+        // تنفيذ النقرة مع محاولات متعددة
+        console.log('🖱️ تنفيذ النقرة...');
+        try {
+          await currentPage.locator(clickSelector).first().click({ timeout: 5000 });
+          console.log('   ✅ تم النقر بنجاح');
+        } catch (e) {
+          console.log('   ⚠️ النقر الطبيعي فشل:', e.message);
+          console.log('   🔄 جاري محاولة النقر الجبري (Force Click)...');
+          try {
+            await currentPage.locator(clickSelector).first().click({ force: true });
+            console.log('   ✅ تم النقر الجبري بنجاح');
+          } catch (forceError) {
+            console.error('   ❌ فشل النقر الجبري أيضاً:', forceError.message);
+            throw forceError;
+          }
+        }
+                break;
+      } catch (stepError) {
+        retries_step15--;
+        if (retries_step15 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 16: انتظار
+    let retries_step16 = 3;
+    while (retries_step16 > 0) {
+      try {
+        // ⏱️ انتظار زمني
+        console.log('\n⏱️ الانتظار:');
+        console.log('   ⏳ المدة: 5000ms (5.0s)');
+        console.log('   ⏳ جاري الانتظار...');
+        await currentPage.waitForTimeout(5000);
+        console.log('   ✅ انتهت مدة الانتظار');
+                break;
+      } catch (stepError) {
+        retries_step16--;
+        if (retries_step16 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 17: انتظار
+    let retries_step17 = 3;
+    while (retries_step17 > 0) {
+      try {
+        // ⏱️ انتظار زمني
+        console.log('\n⏱️ الانتظار:');
+        console.log('   ⏳ المدة: 5000ms (5.0s)');
+        console.log('   ⏳ جاري الانتظار...');
+        await currentPage.waitForTimeout(5000);
+        console.log('   ✅ انتهت مدة الانتظار');
+                break;
+      } catch (stepError) {
+        retries_step17--;
+        if (retries_step17 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 18: التقاط صورة
+    let retries_step18 = 3;
+    while (retries_step18 > 0) {
+      try {
+        // 📸 التقاط لقطة شاشة
+        screenshotCounter++;
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        // ✅ استخدام مسار المخرجات من stealth-helpers
+        const screenshotPath = path.join(paths.screenshots, `screenshot-${screenshotCounter}-viewport-${timestamp}.png`);
+        console.log('📸 جاري التقاط لقطة الشاشة (viewport)...');
+        try {
+          await currentPage.screenshot({ path: screenshotPath,  });
+          console.log('✅ تم حفظ اللقطة بنجاح في:', screenshotPath);
+        } catch (screenshotError) {
+          console.error('❌ خطأ في حفظ لقطة الشاشة:', screenshotError.message);
+          throw screenshotError;
+        }
+                break;
+      } catch (stepError) {
+        retries_step18--;
+        if (retries_step18 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
     console.log("✅ اكتملت المهمة بنجاح");
     return { success: true };
   } catch (error) {
