@@ -1,0 +1,44 @@
+name: 1771277449550850640
+on:
+  workflow_dispatch:
+    inputs:
+      task-id:
+        description: 'Task ID'
+        required: false
+        default: '1771277449550850640'
+  schedule:
+    - cron: '0 */12 * * *'
+
+jobs:
+  run-task:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm install --save-dev playwright
+          npx playwright install chromium
+
+      - name: Run Task
+        run: node scripts/1771277449550850640-copy-2.js
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-results-1771277449550850640
+          path: |
+            ./outputs/
+            ./outputs/screenshots/
+            ./outputs/videos/
+          retention-days: 30
+          if-no-files-found: ignore
