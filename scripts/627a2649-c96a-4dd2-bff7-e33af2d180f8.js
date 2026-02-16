@@ -545,6 +545,8 @@ async function runTask(page, context, paths) {
       }
     }
 
+    await currentPage.waitForTimeout(5000);
+
     // Step 18: التقاط صورة
     let retries_step18 = 3;
     while (retries_step18 > 0) {
