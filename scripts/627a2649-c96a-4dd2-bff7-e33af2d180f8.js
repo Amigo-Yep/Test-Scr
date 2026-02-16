@@ -379,9 +379,49 @@ async function runTask(page, context, paths) {
       }
     }
 
-    // Step 12: التقاط صورة
+    // Step 12: انتظار
     let retries_step12 = 3;
     while (retries_step12 > 0) {
+      try {
+        // ⏱️ انتظار زمني
+        console.log('\n⏱️ الانتظار:');
+        console.log('   ⏳ المدة: 5000ms (5.0s)');
+        console.log('   ⏳ جاري الانتظار...');
+        await currentPage.waitForTimeout(5000);
+        console.log('   ✅ انتهت مدة الانتظار');
+                break;
+      } catch (stepError) {
+        retries_step12--;
+        if (retries_step12 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 13: انتظار
+    let retries_step13 = 3;
+    while (retries_step13 > 0) {
+      try {
+        // ⏱️ انتظار زمني
+        console.log('\n⏱️ الانتظار:');
+        console.log('   ⏳ المدة: 5000ms (5.0s)');
+        console.log('   ⏳ جاري الانتظار...');
+        await currentPage.waitForTimeout(5000);
+        console.log('   ✅ انتهت مدة الانتظار');
+                break;
+      } catch (stepError) {
+        retries_step13--;
+        if (retries_step13 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+
+    // Step 14: التقاط صورة
+    let retries_step14 = 3;
+    while (retries_step14 > 0) {
       try {
         // 📸 التقاط لقطة شاشة
         screenshotCounter++;
@@ -398,8 +438,8 @@ async function runTask(page, context, paths) {
         }
                 break;
       } catch (stepError) {
-        retries_step12--;
-        if (retries_step12 === 0) {
+        retries_step14--;
+        if (retries_step14 === 0) {
           throw stepError;
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
