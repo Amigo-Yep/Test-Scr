@@ -593,10 +593,7 @@ async function runTask(page, context, paths) {
 
     console.log("✅ اكتملت المهمة بنجاح");
     return { success: true };
-  } catch (error) {
-    console.error("❌ خطأ:", error.message);
-    return { success: false, error: error.message };
-  }
+
 }
 
 // دالة تشغيل فعلية - تعمل مباشرة
