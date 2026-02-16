@@ -545,7 +545,24 @@ async function runTask(page, context, paths) {
       }
     }
 
-    await currentPage.waitForTimeout(5000);
+    let retries_step19 = 3;
+    while (retries_step19 > 0) {
+      try {
+        // ⏱️ انتظار زمني
+        console.log('\n⏱️ الانتظار:');
+        console.log('   ⏳ المدة: 5000ms (5.0s)');
+        console.log('   ⏳ جاري الانتظار...');
+        await currentPage.waitForTimeout(5000);
+        console.log('   ✅ انتهت مدة الانتظار');
+                break;
+      } catch (stepError) {
+        retries_step19--;
+        if (retries_step19 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
 
     // Step 18: التقاط صورة
     let retries_step18 = 3;
