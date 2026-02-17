@@ -679,9 +679,23 @@ async function runTask(page, context, paths) {
 
     // تنفيذ المهمة
     try {
-      const result = await runTask(page, context, paths);
-      executionSuccess = result.success;
-      console.log('📊 نتيجة التنفيذ:', result.success ? '✅ نجحت' : '❌ فشلت');
+      console.log('\n🔄 تكرار المهمة 3 مرات');
+      for (let taskLoop = 0; taskLoop < 3; taskLoop++) {
+        console.log(`\n🔄 تنفيذ المهمة ${taskLoop + 1}/3`);
+        try {
+          const result = await runTask(page, context, paths);
+          executionSuccess = result.success;
+          console.log('📊 نتيجة التنفيذ:', result.success ? '✅ نجحت' : '❌ فشلت');
+          if (!result.success) {
+            console.warn('⚠️ فشلت المهمة في التكرار ' + (taskLoop + 1));
+            break;
+          }
+        } catch (iterationError) {
+          executionError = iterationError;
+          console.error('❌ خطأ في التكرار ' + (taskLoop + 1) + ':', iterationError.message);
+          break;
+        }
+      }
     } catch (taskError) {
       executionError = taskError;
       console.error('❌ خطأ في تنفيذ المهمة:', taskError.message);
