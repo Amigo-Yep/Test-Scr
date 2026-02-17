@@ -217,7 +217,7 @@ async function runTask(page, context, paths) {
           if (!typeSelector) {
             throw new Error('❌ لم يتم العثور على حقل الإدخال');
           }
-          await currentPage.fill(typeSelector, "55Fred55@Gmail.com");
+          await currentPage.fill(typeSelector, "2ggg@ggg.com");
           console.log('   ✅ تم ملء الحقل بنجاح');
         } catch (typeError) {
           console.error('   ❌ خطأ في ملء الحقل:', typeError.message);
@@ -257,7 +257,7 @@ async function runTask(page, context, paths) {
           if (!typeSelector) {
             throw new Error('❌ لم يتم العثور على حقل الإدخال');
           }
-          await currentPage.fill(typeSelector, "(55Fred55)");
+          await currentPage.fill(typeSelector, "('12341234')");
           console.log('   ✅ تم ملء الحقل بنجاح');
         } catch (typeError) {
           console.error('   ❌ خطأ في ملء الحقل:', typeError.message);
