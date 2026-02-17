@@ -287,7 +287,7 @@ async function runTask(page, context, paths) {
         // ⌨️ كتابة نص في حقل
         console.log('\n⌨️ كتابة نص في حقل:');
         console.log('   📍 الحقل: #web-ui2');
-        console.log('   📝 النص: '(12341234')');
+        console.log("   📝 النص: ('12341234')");
         console.log('   ⏳ جاري ملء الحقل...');
         try {
           let typeSelector = null;
