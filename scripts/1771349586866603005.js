@@ -150,7 +150,7 @@ async function runTask(page, context, paths) {
         // تنفيذ النقرة مع محاولات متعددة
         console.log('🖱️ تنفيذ النقرة...');
         try {
-          await currentPage.locator(clickSelector).first().click({ timeout: 5000 });
+          await humanClick(currentPage, clickSelector);
           console.log('   ✅ تم النقر بنجاح');
         } catch (e) {
           console.log('   ⚠️ النقر الطبيعي فشل:', e.message);
@@ -244,7 +244,7 @@ async function runTask(page, context, paths) {
           if (!typeSelector) {
             throw new Error('❌ لم يتم العثور على حقل الإدخال');
           }
-          await currentPage.fill(typeSelector, "2ggg@ggg.com");
+          await humanType(currentPage, typeSelector, "2ggg@ggg.com");
           console.log('   ✅ تم ملء الحقل بنجاح');
         } catch (typeError) {
           console.error('   ❌ خطأ في ملء الحقل:', typeError.message);
@@ -287,7 +287,7 @@ async function runTask(page, context, paths) {
         // ⌨️ كتابة نص في حقل
         console.log('\n⌨️ كتابة نص في حقل:');
         console.log('   📍 الحقل: #web-ui2');
-        console.log("   📝 النص: ('12341234')");
+        console.log('   📝 النص: ('12341234')');
         console.log('   ⏳ جاري ملء الحقل...');
         try {
           let typeSelector = null;
@@ -304,7 +304,7 @@ async function runTask(page, context, paths) {
           if (!typeSelector) {
             throw new Error('❌ لم يتم العثور على حقل الإدخال');
           }
-          await currentPage.fill(typeSelector, "('12341234')");
+          await humanType(currentPage, typeSelector, "('12341234')");
           console.log('   ✅ تم ملء الحقل بنجاح');
         } catch (typeError) {
           console.error('   ❌ خطأ في ملء الحقل:', typeError.message);
@@ -403,7 +403,7 @@ async function runTask(page, context, paths) {
         // تنفيذ النقرة مع محاولات متعددة
         console.log('🖱️ تنفيذ النقرة...');
         try {
-          await currentPage.locator(clickSelector).first().click({ timeout: 5000 });
+          await humanClick(currentPage, clickSelector);
           console.log('   ✅ تم النقر بنجاح');
         } catch (e) {
           console.log('   ⚠️ النقر الطبيعي فشل:', e.message);
@@ -679,23 +679,9 @@ async function runTask(page, context, paths) {
 
     // تنفيذ المهمة
     try {
-      console.log('\n🔄 تكرار المهمة 3 مرات');
-      for (let taskLoop = 0; taskLoop < 3; taskLoop++) {
-        console.log(`\n🔄 تنفيذ المهمة ${taskLoop + 1}/3`);
-        try {
-          const result = await runTask(page, context, paths);
-          executionSuccess = result.success;
-          console.log('📊 نتيجة التنفيذ:', result.success ? '✅ نجحت' : '❌ فشلت');
-          if (!result.success) {
-            console.warn('⚠️ فشلت المهمة في التكرار ' + (taskLoop + 1));
-            break;
-          }
-        } catch (iterationError) {
-          executionError = iterationError;
-          console.error('❌ خطأ في التكرار ' + (taskLoop + 1) + ':', iterationError.message);
-          break;
-        }
-      }
+      const result = await runTask(page, context, paths);
+      executionSuccess = result.success;
+      console.log('📊 نتيجة التنفيذ:', result.success ? '✅ نجحت' : '❌ فشلت');
     } catch (taskError) {
       executionError = taskError;
       console.error('❌ خطأ في تنفيذ المهمة:', taskError.message);
