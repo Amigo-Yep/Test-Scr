@@ -162,6 +162,9 @@ export async function createStealthBrowser(options = {}) {
   console.log('🚀 Launching browser with stealth mode...');
 
   const browser = await chromium.launch({
+    proxy: {
+      server: 'https://100.50.74.252:80',
+    },
     headless: true,
     args: launchArgs
   });
