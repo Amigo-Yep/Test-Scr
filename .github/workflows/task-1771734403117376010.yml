@@ -52,7 +52,10 @@ jobs:
         if: always()
         with:
           name: task-results-run-${{ github.run_number }}
-          path: results/
+          path: |
+            ./outputs/
+            ./outputs/screenshots/
+            ./outputs/videos/
           retention-days: 7
       
       - name: Generate Summary Report
