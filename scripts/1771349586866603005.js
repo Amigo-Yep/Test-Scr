@@ -520,63 +520,63 @@ async function runTask(page, context, paths) {
     }
 
     // Step 18: نقر على عنصر
-    // let retries_step18 = 2;
-    // while (retries_step18 > 0) {
-    //   try {
+    let retries_step18 = 2;
+    while (retries_step18 > 0) {
+      try {
         
-    //     // 👆 خطوة نقر ذكية على العنصر
-    //     console.log('\n👆 خطوة نقر على عنصر:');
-    //     console.log('   🔍 جاري البحث عن العنصر...');
-    //     console.log('   📋 عدد المحددات:', 3);
-    //     let clickSelector = null;
-    //     const selectorsToTry = ["button[data-test='register-button']","button:has-text(\"Login\")","button:has-text(\"Sign In\")"];
+        // 👆 خطوة نقر ذكية على العنصر
+        console.log('\n👆 خطوة نقر على عنصر:');
+        console.log('   🔍 جاري البحث عن العنصر...');
+        console.log('   📋 عدد المحددات:', 3);
+        let clickSelector = null;
+        const selectorsToTry = ["button[data-test='register-button']","button:has-text(\"Login\")","button:has-text(\"Sign In\")"];
         
-    //     // البحث عن أول عنصر قابل للنقر
-    //     for (const selector of selectorsToTry) {
-    //       try {
-    //         const element = await currentPage.locator(selector).first();
-    //         if (await element.isVisible({ timeout: 1000 }).catch(() => false)) {
-    //           clickSelector = selector;
-    //           break;
-    //         }
-    //       } catch (e) {}
-    //     }
+        // البحث عن أول عنصر قابل للنقر
+        for (const selector of selectorsToTry) {
+          try {
+            const element = await currentPage.locator(selector).first();
+            if (await element.isVisible({ timeout: 1000 }).catch(() => false)) {
+              clickSelector = selector;
+              break;
+            }
+          } catch (e) {}
+        }
         
-    //     if (!clickSelector) {
-    //       const errorMsg = '❌ فشل: لم يتم العثور على عنصر قابل للنقر بأي من المحددات: ' + selectorsToTry.join(', ');
-    //       console.error(errorMsg);
-    //       throw new Error(errorMsg);
-    //     }
+        if (!clickSelector) {
+          const errorMsg = '❌ فشل: لم يتم العثور على عنصر قابل للنقر بأي من المحددات: ' + selectorsToTry.join(', ');
+          console.error(errorMsg);
+          throw new Error(errorMsg);
+        }
         
-    //     console.log('✅ عنصر وُجد بنجاح:');
-    //     console.log('   📍 Selector:', clickSelector);
-    //     console.log('   ✓ الحالة: مرئي وقابل للنقر');
+        console.log('✅ عنصر وُجد بنجاح:');
+        console.log('   📍 Selector:', clickSelector);
+        console.log('   ✓ الحالة: مرئي وقابل للنقر');
         
-    //     // تنفيذ النقرة مع محاولات متعددة
-    //     console.log('🖱️ تنفيذ النقرة...');
-    //     try {
-    //       await currentPage.locator(clickSelector).first().click({ timeout: 5000 });
-    //       console.log('   ✅ تم النقر بنجاح');
-    //     } catch (e) {
-    //       console.log('   ⚠️ النقر الطبيعي فشل:', e.message);
-    //       console.log('   🔄 جاري محاولة النقر الجبري (Force Click)...');
-    //       try {
-    //         await currentPage.locator(clickSelector).first().click({ force: true });
-    //         console.log('   ✅ تم النقر الجبري بنجاح');
-    //       } catch (forceError) {
-    //         console.error('   ❌ فشل النقر الجبري أيضاً:', forceError.message);
-    //         throw forceError;
-    //       }
-    //     }
-    //             break;
-    //   } catch (stepError) {
-    //     retries_step18--;
-    //     if (retries_step18 === 0) {
-    //       throw stepError;
-    //     }
-    //     await new Promise(resolve => setTimeout(resolve, 1000));
-    //   }
-    // }
+        // تنفيذ النقرة مع محاولات متعددة
+        console.log('🖱️ تنفيذ النقرة...');
+        try {
+          await currentPage.locator(clickSelector).first().click({ timeout: 5000 });
+          console.log('   ✅ تم النقر بنجاح');
+        } catch (e) {
+          console.log('   ⚠️ النقر الطبيعي فشل:', e.message);
+          console.log('   🔄 جاري محاولة النقر الجبري (Force Click)...');
+          try {
+            await currentPage.locator(clickSelector).first().click({ force: true });
+            console.log('   ✅ تم النقر الجبري بنجاح');
+          } catch (forceError) {
+            console.error('   ❌ فشل النقر الجبري أيضاً:', forceError.message);
+            throw forceError;
+          }
+        }
+                break;
+      } catch (stepError) {
+        retries_step18--;
+        if (retries_step18 === 0) {
+          throw stepError;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
 
     // Step 19: انتظار
     let retries_step19 = 3;
@@ -586,7 +586,7 @@ async function runTask(page, context, paths) {
         console.log('\n⏱️ الانتظار:');
         console.log('   ⏳ المدة: 11000ms (11.0s)');
         console.log('   ⏳ جاري الانتظار...');
-        await currentPage.waitForTimeout(11000);
+        await currentPage.waitForTimeout(17000);
         console.log('   ✅ انتهت مدة الانتظار');
                 break;
       } catch (stepError) {
