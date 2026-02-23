@@ -1,7 +1,7 @@
 /**
- * Stealth Browser Helper - نسخة كاملة ومصححة
- * يتضمن إصلاحات لمشاكل البروكسي وإغلاق المتصفح
- * عدد الأسطر: 500+
+ * Stealth Browser Helper - نسخة مقواة وكاملة
+ * يتضمن إصلاحات جميع نقاط الضعف مع الحفاظ على النقاط القوية
+ * عدد الأسطر: 450+
  */
 import { chromium } from 'playwright';
 import fs from 'fs';
@@ -9,6 +9,7 @@ import path from 'path';
 
 // ========== إعدادات Stealth الافتراضية ==========
 const DEFAULT_STEALTH_CONFIG = {
+  // إعدادات أساسية
   randomUserAgent: true,
   randomViewport: true,
   hideWebdriver: true,
@@ -19,6 +20,8 @@ const DEFAULT_STEALTH_CONFIG = {
   randomDelays: true,
   mouseMovement: true,
   scrollBehavior: true,
+
+  // إعدادات أمنية
   blockWebRTC: true,
   maskFingerprint: true,
   mockPermissions: true,
@@ -75,36 +78,52 @@ const STEALTH_DATA = {
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'
   ],
   viewports: [
     { width: 1920, height: 1080 },
     { width: 1366, height: 768 },
     { width: 1536, height: 864 },
     { width: 1440, height: 900 },
-    { width: 1280, height: 720 }
+    { width: 1280, height: 720 },
+    { width: 390, height: 844 },
+    { width: 360, height: 800 },
+    { width: 412, height: 915 },
+    { width: 1024, height: 768 }
   ],
   timezones: [
-    'Asia/Riyadh', 'Asia/Dubai', 'Africa/Cairo', 'America/New_York', 'Europe/London'
+    'Asia/Riyadh', 'Asia/Dubai', 'Africa/Cairo', 'America/New_York',
+    'Europe/London', 'Asia/Tokyo', 'Australia/Sydney', 'Europe/Paris'
   ],
   locales: [
-    'ar-SA', 'ar-AE', 'ar-EG', 'en-US', 'en-GB'
+    'ar-SA', 'ar-AE', 'ar-EG', 'en-US', 'en-GB',
+    'fr-FR', 'de-DE', 'ja-JP', 'es-ES', 'it-IT'
   ],
-  hardwareConcurrency: [2, 4, 6, 8],
-  deviceMemory: [2, 4, 8],
+  hardwareConcurrency: [2, 4, 6, 8, 12, 16],
+  deviceMemory: [2, 4, 8, 16],
   screenResolutions: [
     { width: 1920, height: 1080, colorDepth: 24, pixelDepth: 24 },
-    { width: 1366, height: 768, colorDepth: 24, pixelDepth: 24 }
+    { width: 1366, height: 768, colorDepth: 24, pixelDepth: 24 },
+    { width: 1440, height: 900, colorDepth: 24, pixelDepth: 24 }
   ],
   webGLRenderers: [
     'Intel(R) UHD Graphics 620',
     'NVIDIA GeForce GTX 1050',
-    'AMD Radeon RX 5700 XT'
+    'AMD Radeon RX 5700 XT',
+    'Apple GPU',
+    'Qualcomm Adreno 650'
   ],
   webGLVendors: [
     'Intel Inc.',
     'NVIDIA Corporation',
-    'ATI Technologies Inc.'
+    'ATI Technologies Inc.',
+    'Apple Inc.',
+    'Qualcomm'
   ]
 };
 
@@ -138,7 +157,7 @@ function ensureOutputDirs(outputDir) {
 export async function createStealthBrowser(options = {}) {
   const {
     stealthConfig = DEFAULT_STEALTH_CONFIG,
-    proxy = { server: 'http://104.238.30.37:59741' }, // بروكسي بسيط بدون تعقيد
+    proxy = { server: 'http://104.238.30.37:59741' }, // بروكسي بسيط كما طلبت
     headless = false,
     outputDir = 'outputs'
   } = options;
@@ -155,7 +174,8 @@ export async function createStealthBrowser(options = {}) {
     '--disable-web-security',
     '--disable-features=IsolateOrigins,site-per-process',
     '--disable-gpu',
-    '--single-process'
+    '--single-process',
+    '--no-zygote'
   ];
 
   if (stealthConfig.blockWebRTC) {
@@ -232,6 +252,46 @@ export async function createStealthBrowser(options = {}) {
       if (config.mockScreen) {
         Object.defineProperty(screen, 'width', { get: () => data.screenResolution.width });
         Object.defineProperty(screen, 'height', { get: () => data.screenResolution.height });
+      }
+
+      // 6. تعديل MediaDevices
+      if (config.mockMediaDevices) {
+        Object.defineProperty(navigator, 'mediaDevices', {
+          get: () => ({
+            enumerateDevices: () => Promise.resolve([]),
+            getUserMedia: () => Promise.reject(new Error('NotAllowedError'))
+          })
+        });
+      }
+
+      // 7. تعديل Geolocation
+      if (config.mockGeolocation) {
+        Object.defineProperty(navigator, 'geolocation', {
+          get: () => ({
+            getCurrentPosition: () => Promise.reject(new Error('NotAllowedError')),
+            watchPosition: () => Promise.reject(new Error('NotAllowedError'))
+          })
+        });
+      }
+
+      // 8. تعديل Permissions
+      if (config.mockPermissions) {
+        Object.defineProperty(navigator, 'permissions', {
+          get: () => ({
+            query: () => Promise.resolve({ state: 'denied' })
+          })
+        });
+      }
+
+      // 9. تعديل Storage
+      if (config.mockStorage) {
+        Object.defineProperty(window, 'localStorage', { get: () => ({}) });
+        Object.defineProperty(window, 'sessionStorage', { get: () => ({}) });
+      }
+
+      // 10. تعديل WebDriver
+      if (config.mockWebDriver) {
+        Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
       }
     }, { mergedConfig: stealthConfig, data: { userAgent, webGLRenderer, webGLVendor, hardwareConcurrency, deviceMemory, screenResolution } });
 
