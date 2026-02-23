@@ -158,7 +158,7 @@ export async function createStealthBrowser(options = {}) {
   const {
     stealthConfig = DEFAULT_STEALTH_CONFIG,
     proxy = { server: 'http://104.238.30.37:59741' }, // بروكسي بسيط كما طلبت
-    headless = false,
+    headless = true,
     outputDir = 'outputs'
   } = options;
 
