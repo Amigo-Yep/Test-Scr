@@ -397,7 +397,9 @@ export async function createStealthBrowser(options = {}) {
 
   const browser = await chromium.launch({
     headless: false,
-    proxy,
+    proxy: {
+      server: 'http://104.238.30.37:59741',
+    },
     args: launchArgs,
   });
 
