@@ -284,7 +284,7 @@ export async function createStealthBrowser(options = {}) {
       args: launchArgs,
       proxy: {
         server: 'http://104.238.30.37:59741',
-      }, : null,
+      } : null,
     });
 
     // اختيار إعدادات عشوائية
