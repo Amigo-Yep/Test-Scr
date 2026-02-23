@@ -318,9 +318,7 @@ function ensureOutputDirs(outputDir) {
 export async function createStealthBrowser(options = {}) {
   const {
     stealthConfig = DEFAULT_STEALTH_CONFIG,
-    proxy: {
-      server: 'http://104.238.30.37:59741',
-    },
+    proxy = null,
     headless = true,
     outputDir = process.env.OUTPUT_DIR || 'outputs',
     disableWebSecurity = false
