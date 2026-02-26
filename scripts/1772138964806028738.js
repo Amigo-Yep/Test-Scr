@@ -271,7 +271,7 @@ async function runTask(page, context, paths) {
       try {
         // ⌨️ كتابة نص في حقل
         console.log('\n⌨️ كتابة نص في حقل:');
-        console.log('   📍 الحقل: input[aria-label='البريد الإلكتروني أو الهاتف']');
+        // console.log('   📍 الحقل: input[aria-label='البريد الإلكتروني أو الهاتف']');
         console.log('   📝 النص: helloo.eva#gmail.com');
         console.log('   ⏳ جاري ملء الحقل...');
         try {
